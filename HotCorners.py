@@ -7,9 +7,10 @@ import pystray
 from pystray import MenuItem as item
 import tkinter as tk
 from tkinter import ttk
-from PIL import Image, ImageTk
+from PIL import Image
 import os
 import sys
+from Hotkeys import HOTKEYS
 
 # Disable PyAutoGui failsafe
 pyautogui.FAILSAFE = False
@@ -20,7 +21,6 @@ def resource_path(relative_path):
         base_path = sys._MEIPASS
     except Exception:
         base_path = os.path.abspath(".")
-
     return os.path.join(base_path, relative_path)
 
 # Fetch the screen resolution
@@ -37,21 +37,25 @@ bottom_right = (screen_width - 1, screen_height - 1)
 # Trigger delay
 delay = float(0.1);
 
-# Define the action to perform when the hot corner is triggered
+# Function to perform the action based on the triggered corner
 def perform_action(corner):
-    print(f"Hot corner triggered: {corner}")
-    # Add your desired action or function here
+    selected_action = None
+
     if corner == 'top_left':
-        pyautogui.hotkey('alt', 'tab')
+        selected_action = top_left_action.get()
+    elif corner == 'top_right':
+        selected_action = top_right_action.get()
+    elif corner == 'bottom_left':
+        selected_action = bottom_left_action.get()
+    elif corner == 'bottom_right':
+        selected_action = bottom_right_action.get()
 
-    if corner == 'top_right':
-        pyautogui.hotkey('alt', 'tab')
+    if selected_action:
+        for name, hotkeys in HOTKEYS:
+            if name == selected_action:
+                pyautogui.hotkey(*hotkeys)
+                break
 
-    if corner == 'bottom_left':
-        pyautogui.hotkey('win', 'd')
-
-    if corner == 'bottom_right':
-        pyautogui.hotkey('win', 'd')
 
 # Define the function to check if the mouse is in any of the hot corners
 def check_hot_corners():
@@ -127,23 +131,55 @@ def hot_corners_loop():
 root = tk.Tk()
 root.title("Hot Corners")
 
-# Create a frame to hold the widgets
-frame = ttk.Frame(root, padding="20")
-frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+padding = 5
 
 # Create the start button
-start_button = ttk.Button(frame, text="Start Hot Corners", command=start_hot_corners)
-start_button.grid(row=0, column=0, padx=(0, 10), pady=(0, 10), sticky=tk.W)
+start_button = ttk.Button(root, text="Start Hot Corners", command=start_hot_corners)
+start_button.grid(row=0, column=0, padx=padding, pady=padding)
 
 # Create the stop button
-stop_button = ttk.Button(frame, text="Stop Hot Corners", command=stop_hot_corners)
-stop_button.grid(row=0, column=1, padx=(10, 0), pady=(0, 10), sticky=tk.W)
+stop_button = ttk.Button(root, text="Stop Hot Corners", command=stop_hot_corners)
+stop_button.grid(row=0, column=1, padx=padding, pady=padding)
 
 # Create the status text box
-status_text = tk.Text(frame, height=1, width=25)
-status_text.grid(row=1, column=0, columnspan=2)
+status_text = tk.Text(root, height=1, width=20)
+status_text.insert(tk.END, "Not running", "stopped")
+status_text.grid(row=0, column=2, columnspan=2, padx=padding, pady=padding)
 status_text.tag_configure("running", foreground="green")
 status_text.tag_configure("stopped", foreground="red")
+
+# Create variables to store the selected values
+top_left_action = tk.StringVar()
+top_right_action = tk.StringVar()
+bottom_left_action = tk.StringVar()
+bottom_right_action = tk.StringVar()
+
+# Create a list of hotkey names
+hotkey_names = [name for name, _ in HOTKEYS]
+
+# Create the dropdown lists
+top_left_dropdown = ttk.Combobox(root, values=hotkey_names, textvariable=top_left_action, state="readonly")
+top_right_dropdown = ttk.Combobox(root, values=hotkey_names, textvariable=top_right_action, state="readonly")
+bottom_left_dropdown = ttk.Combobox(root, values=hotkey_names, textvariable=bottom_left_action, state="readonly")
+bottom_right_dropdown = ttk.Combobox(root, values=hotkey_names, textvariable=bottom_right_action, state="readonly")
+
+# Create the labels
+top_left_label = ttk.Label(root, text="Top Left Action:")
+top_right_label = ttk.Label(root, text="Top Right Action:")
+bottom_left_label = ttk.Label(root, text="Bottom Left Action:")
+bottom_right_label = ttk.Label(root, text="Bottom Right Action:")
+
+# Position the labels
+top_left_label.grid(row=1, column=0, columnspan=2, padx=padding, pady=padding)
+top_right_label.grid(row=1, column=2, columnspan=2, padx=padding, pady=padding)
+bottom_left_label.grid(row=3, column=0, columnspan=2, padx=padding, pady=padding)
+bottom_right_label.grid(row=3, column=2, columnspan=2, padx=padding, pady=padding)
+
+# Position the dropdown lists
+top_left_dropdown.grid(row=2, column=0, columnspan=2, padx=padding, pady=padding)
+top_right_dropdown.grid(row=2, column=2, columnspan=2, padx=padding, pady=padding)
+bottom_left_dropdown.grid(row=4, column=0, columnspan=2, padx=padding, pady=padding)
+bottom_right_dropdown.grid(row=4, column=2, columnspan=2, padx=padding, pady=padding)
 
 # Define a function for quit the window
 def quit_window(icon, item):

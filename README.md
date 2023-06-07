@@ -7,7 +7,7 @@ Contribution and help is appreciated, this is my first attempt at building a pyt
 
 ## Features
 
-- Currently two hotkeys (bottom corners: show desktop, top corners: previous window)
+- Select from preset actions to bind to each of the four corners
 - Start and stop the hot corners detection
 - Minimizes to tray
 
@@ -34,8 +34,8 @@ Contribution and help is appreciated, this is my first attempt at building a pyt
 
 ## TODO
 
-* Customizable actions
 * Custom delays
+* Accept custom shortcuts by parsing/reading key inputs
 
 ## Contributing
 
