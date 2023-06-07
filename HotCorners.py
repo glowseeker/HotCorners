@@ -9,13 +9,19 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
 import os
+import sys
 
 # Disable PyAutoGui failsafe
 pyautogui.FAILSAFE = False
 
-# Set icon path
-script_directory = os.path.dirname(os.path.abspath(__file__))
-image_path = os.path.join(script_directory, "icon.png")
+# Set images path
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 # Fetch the screen resolution
 monitor = get_monitors()[0]
@@ -159,7 +165,7 @@ def hide_window():
    menu=(item('Quit', quit_window), item('Show', show_window))
    
    # Create the systray icon
-   image = Image.open(image_path)
+   image = Image.open(resource_path("icon.png"))
    icon=pystray.Icon("name", image, "Hot Corners", menu)
    icon.run()
    
