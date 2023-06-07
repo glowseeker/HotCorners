@@ -2,6 +2,9 @@
 
 Hot Corners is a small Python script that allows you to execute hotkeys triggered by moving the mouse cursor to specific corners of the screen.
 
+Contribution and help is appreciated, this is my first attempt at building a python app with a GUI and packing it as a binary file.
+
+
 ## Features
 
 - Currently two hotkeys (bottom corners: show desktop, top corners: previous window)
