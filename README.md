@@ -1,12 +1,12 @@
 # Hot Corners
 
-Hot Corners is a small Python script that allows you to define custom actions triggered by moving the mouse cursor to specific corners of the screen.
+Hot Corners is a small Python script that allows you to execute hotkeys triggered by moving the mouse cursor to specific corners of the screen.
 
 ## Features
 
-- Define custom actions for each corner of the screen
-- Customize the delay before triggering an action
+- Currently two hotkeys (bottom corners: show desktop, top corners: previous window)
 - Start and stop the hot corners detection
+- Minimizes to tray
 
 ## Prerequisites
 
@@ -36,7 +36,7 @@ Hot Corners is a small Python script that allows you to define custom actions tr
 
 ## Contributing
 
-Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue or submit
+Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue or submit.
 
 ## Licensing
 
