@@ -36,6 +36,7 @@ Contribution and help is appreciated, this is my first attempt at building a pyt
 
 * Custom delays
 * Accept custom shortcuts by parsing/reading key inputs
+* Offer pre-built binaries (it works but the .exe is massively bloated, around 60mb)
 
 ## Contributing
 
