@@ -141,22 +141,30 @@ status_text.tag_configure("stopped", foreground="red")
 
 # Define a function for quit the window
 def quit_window(icon, item):
-   icon.stop()
-   root.destroy()
+    root.quit()
+    icon.stop()
 
 # Define a function to show the window again
 def show_window(icon, item):
-   icon.stop()
-   root.after(0,root.deiconify())
+    icon.stop()  # Set focus on the window
+    root.after(0, root.deiconify)  # Show the window with a slight delay
+
 
 # Hide the window and show on the system taskbar
 def hide_window():
+   # Hide the window
    root.withdraw()
-   image = Image.open(image_path)
-   menu=(item('Quit', quit_window), item('Show', show_window))
-   icon=pystray.Icon("name", image, "My System Tray Icon", menu)
-   icon.run()
 
+   # Create the context menu
+   menu=(item('Quit', quit_window), item('Show', show_window))
+   
+   # Create the systray icon
+   image = Image.open(image_path)
+   icon=pystray.Icon("name", image, "Hot Corners", menu)
+   icon.run()
+   
+# Bind the hide_window function to the "Close" button
 root.protocol('WM_DELETE_WINDOW', hide_window)
 
+# Start the main event loop
 root.mainloop()
